@@ -1,506 +1,617 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Sistema Móvil Evaluación Packaging</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #05060f;
-      color: #e5f2ff;
-      min-height: 100vh;
-    }
-    .header {
-      background: #0d1220;
-      padding: 14px;
-      border-bottom: 2px solid #00ff41;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .header h1 {
-      font-size: 1.2rem;
-      text-align: center;
-      color: #00ff41;
-    }
-    .status {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #58ffc7;
-      margin-top: 4px;
-    }
-    .container { padding: 10px; max-width: 900px; margin: 0 auto; }
-    .section {
-      background: #0d1220;
-      border: 1px solid #131a2e;
-      border-radius: 8px;
-      padding: 10px;
-      margin: 8px 0;
-    }
-    .section-title {
-      color: #00ff41;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      max-height: 200px;
-      overflow-y: auto;
-      padding: 4px;
-    }
-    .checkbox-item {
-      display: flex;
-      align-items: center;
-      padding: 6px;
-      background: #131a2e;
-      border-radius: 4px;
-      gap: 8px;
-      cursor: pointer;
-    }
-    .checkbox-item input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: #00ff41;
-      cursor: pointer;
-    }
-    .checkbox-item label {
-      flex: 1;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-    .btn {
-      width: 100%;
-      margin: 10px 0;
-      padding: 12px;
-      border-radius: 6px;
-      border: 2px solid #00ff41;
-      background: #131a2e;
-      color: #e5f2ff;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.25s all;
-    }
-    .btn:hover, .btn:active {
-      background: #00ff41;
-      color: #05060f;
-    }
-    .results {
-      background: #0d1220;
-      border-radius: 8px;
-      padding: 10px;
-      margin: 10px 0;
-      max-height: 500px;
-      overflow-y: auto;
-    }
-    .alert {
-      padding: 8px 10px;
-      margin: 6px 0;
-      border-radius: 4px;
-      border-left: 4px solid;
-      font-size: 0.9rem;
-      white-space: pre-line;
-    }
-    .alert-error { background: rgba(255,107,107,0.1); border-color: #ff6b6b; color: #ff8686; }
-    .alert-warning { background: rgba(255,204,112,0.1); border-color: #ffcc70; color: #ffd083; }
-    .alert-info { background: rgba(88,255,199,0.1); border-color: #58ffc7; color: #a3ffe3; }
-    .sequence {
-      margin-top: 8px;
-      padding: 8px;
-      background: #131a2e;
-      border-radius: 4px;
-      font-size: 0.9rem;
-    }
-    .sequence-item { padding: 3px 0; }
-    @media (max-width: 768px) {
-      .container { padding: 8px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Móvil Evaluación Packaging</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #05060f;
+            color: #e5f2ff;
+            min-height: 100vh;
+        }
+        .header {
+            background: #0d1220;
+            padding: 14px;
+            border-bottom: 2px solid #00ff41;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header h1 {
+            font-size: 1.2rem;
+            text-align: center;
+            color: #00ff41;
+        }
+        .status {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #58ffc7;
+            margin-top: 4px;
+        }
+        .container { padding: 12px; max-width: 900px; margin: 0 auto; }
+        .section {
+            background: #0d1220;
+            border: 1px solid #131a2e;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+        .section-title {
+            color: #00ff41;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 6px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            background: #131a2e;
+            border-radius: 4px;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .checkbox-item:hover { background: #1a2338; }
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #00ff41;
+            cursor: pointer;
+        }
+        .checkbox-item label {
+            flex: 1;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .btn {
+            width: 100%;
+            margin: 12px 0;
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px solid #00ff41;
+            background: #131a2e;
+            color: #e5f2ff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.25s all;
+        }
+        .btn:hover, .btn:active {
+            background: #00ff41;
+            color: #05060f;
+        }
+        .results {
+            background: #0d1220;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+        .alert {
+            padding: 8px 10px;
+            margin: 6px 0;
+            border-radius: 4px;
+            border-left: 4px solid;
+            font-size: 0.9rem;
+            white-space: pre-line;
+        }
+        .alert-error { background: rgba(255,107,107,0.1); border-color: #ff6b6b; color: #ff8686; }
+        .alert-warning { background: rgba(255,204,112,0.1); border-color: #ffcc70; color: #ffd083; }
+        .alert-info { background: rgba(88,255,199,0.1); border-color: #58ffc7; color: #a3ffe3; }
+        .sequence {
+            margin-top: 8px;
+            padding: 8px;
+            background: #131a2e;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .sequence-item { padding: 3px 0; }
+        @media (max-width: 768px) { .container { padding: 10px; } }
+    </style>
 </head>
 <body>
-  <header class="header">
-    <h1>Sistema Móvil Evaluación Packaging</h1>
-    <p class="status">Versión web solo evaluación – datos embebidos (standalone)</p>
-  </header>
+    <header class="header">
+        <h1>Sistema Móvil Evaluación Packaging</h1>
+        <p class="status">Versión web solo evaluación – datos generados automáticamente</p>
+    </header>
 
-  <main class="container">
-    <div class="section">
-      <div class="section-title">Material(es)</div>
-      <div class="checkbox-group" id="materials-eval"></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Tinta(s)</div>
-      <div class="checkbox-group" id="inks-eval"></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Barniz(es) / Laca(s)</div>
-      <div class="checkbox-group" id="varnishes-eval"></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Laminado(s) / Film(s)</div>
-      <div class="checkbox-group" id="films-eval"></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Acabados</div>
-      <div class="checkbox-group" id="finishes-eval"></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Pegado / Adhesivo</div>
-      <div class="checkbox-group" id="adhesion-eval"></div>
-    </div>
-    <div class="section">
-      <div class="section-title">Proceso / Contexto</div>
-      <div class="checkbox-group" id="process-flags-eval"></div>
-    </div>
+    <main class="container">
+        <div class="section">
+            <div class="section-title">Material(es)</div>
+            <div class="checkbox-group" id="materials-eval"></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Tinta(s)</div>
+            <div class="checkbox-group" id="inks-eval"></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Barniz(es) / Laca(s)</div>
+            <div class="checkbox-group" id="varnishes-eval"></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Laminado(s) / Film(s)</div>
+            <div class="checkbox-group" id="films-eval"></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Acabados</div>
+            <div class="checkbox-group" id="finishes-eval"></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Pegado / Adhesivo</div>
+            <div class="checkbox-group" id="adhesion-eval"></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Proceso / Contexto</div>
+            <div class="checkbox-group" id="process-flags-eval"></div>
+        </div>
 
-    <button class="btn" onclick="evaluarCompatibilidad()">Evaluar compatibilidad</button>
+        <button class="btn" onclick="evaluarCompatibilidad()">Evaluar compatibilidad</button>
 
-    <section class="results" id="results-eval">
-      <p style="text-align:center;color:#00ff41;">
-        Selecciona componentes y pulsa “Evaluar compatibilidad”.
-      </p>
-    </section>
-  </main>
+        <section class="results" id="results-eval">
+            <p style="text-align:center;color:#00ff41;">
+                Selecciona componentes y pulsa “Evaluar compatibilidad”.
+            </p>
+        </section>
+    </main>
 
-  <script>
-    // ======================
-    //  Datos embebidos
-    // ======================
-    const CONFIG = {
-      catalog: {
-        materials: [
-          "FBB (GC1/GC2) – cartón estucado fibra virgen",
-          "SBS/SBB (GZ) – cartón blanqueado premium",
-          "SUS – kraft virgen dorso marrón",
-          "WLC (GD/GT) – reciclado estucado dorso gris/crema",
-          "Cast Coated – alto brillo espejo",
-          "Cartón metalizado (foil/transfer metal)"
+    <script>
+        const CONFIG = {
+  "catalog": {
+    "materials": [
+      "FBB (GC1/GC2) – cartón estucado fibra virgen",
+      "SBS/SBB (GZ) – cartón blanqueado premium",
+      "SUS – kraft virgen dorso marrón",
+      "WLC (GD/GT) – reciclado estucado dorso gris/crema",
+      "Cast Coated – alto brillo espejo",
+      "Cartón con barrera acuosa/dispersion (sin film)",
+      "Cartón con PE/biopolímero (barrera extruida)",
+      "Cartón metalizado (foil/transfer metal)"
+    ],
+    "inks": [
+      "Offset Convencional (estándar)",
+      "Offset Convencional – Baja Migración (LM)",
+      "UV Offset",
+      "UV-LED Offset / Low Energy UV",
+      "Serigrafía UV",
+      "Flexo UV (barniz/integrado)"
+    ],
+    "varnishes": [
+      "Acuoso (AQ) brillo",
+      "Acuoso (AQ) mate",
+      "UV brillo",
+      "UV mate/satinado",
+      "Soft touch acuoso",
+      "Soft touch film (laminado)",
+      "Drip-off (offset+UV)",
+      "Anti-scratch/anti-scuff OPV",
+      "Barniz serigráfico alto relieve",
+      "Texturizado (arena, rugoso)",
+      "Aromático (scratch & sniff)",
+      "Baja migración (LM) UV/OPV"
+    ],
+    "films": [
+      "Laminado BOPP brillo",
+      "Laminado BOPP mate",
+      "Laminado PET brillo",
+      "Laminado Soft-touch (velvet)",
+      "Laminado Holográfico"
+    ],
+    "finishes": [
+      "Hot foil (estamping caliente)",
+      "Cold foil (en frío)",
+      "Cast & Cure (holografía clara)",
+      "Emboss (relieve)",
+      "Deboss (bajo relieve)",
+      "Relieve multinivel",
+      "Serigrafía UV alto depósito (relieve)",
+      "Glitter (serigrafía/UV)",
+      "Braille (farma)",
+      "Troquel láser / microperforado",
+      "Marcado láser (trazabilidad)",
+      "Códigos invisibles UV/IR"
+    ],
+    "adhesion_glue": [
+      "Pegado PVA (cola blanca)",
+      "Hotmelt EVA/PO",
+      "Cianoacrilato / especial"
+    ],
+    "process_flags": [
+      "Hendido/plegado",
+      "Plegado/encolado",
+      "Alimentación",
+      "Farma",
+      "Reciclabilidad"
+    ]
+  },
+  "rules": [
+    {
+      "when_all": {
+        "finishes": [
+          "Hot foil (estamping caliente)"
         ],
-        inks: [
-          "Offset Convencional (estándar)",
-          "Offset Convencional – Baja Migración (LM)",
-          "UV Offset",
-          "UV-LED Offset / Low Energy UV",
-          "Serigrafía UV"
-        ],
-        varnishes: [
-          "Acuoso (AQ) brillo",
-          "Acuoso (AQ) mate",
+        "varnishes": [
           "UV brillo",
-          "UV mate/satinado",
-          "Anti-scratch/anti-scuff OPV",
-          "Soft touch acuoso"
-        ],
-        films: [
-          "Laminado BOPP brillo",
-          "Laminado BOPP mate",
-          "Laminado Soft-touch (velvet)"
-        ],
-        finishes: [
-          "Hot foil (estamping caliente)",
-          "Cold foil (en frío)",
-          "Emboss (relieve)",
-          "Deboss (bajo relieve)",
-          "Braille (farma)",
-          "Códigos invisibles UV/IR"
-        ],
-        adhesion_glue: [
-          "Pegado PVA (cola blanca)",
-          "Hotmelt EVA/PO"
-        ],
-        process_flags: [
-          "Hendido/plegado",
-          "Plegado/encolado",
-          "Alimentación",
-          "Farma",
-          "Reciclabilidad"
+          "UV mate/satinado"
         ]
       },
-      rules: [
-        {
-          when_all: {
-            finishes: ["Hot foil (estamping caliente)"],
-            varnishes: ["UV brillo", "UV mate/satinado"]
-          },
-          severity: "WARNING",
-          message: "Barniz UV sobre hot foil puede producir de-wetting y pérdida de brillo. Usar OPV compatible o reservar."
-        },
-        {
-          when_all: {
-            materials: ["Cartón metalizado (foil/transfer metal)"],
-            inks: ["Offset Convencional (estándar)"]
-          },
-          severity: "WARNING",
-          message: "Sobre metalizado, la densidad y el trapping cambian: usar cama blanca/primer y ajustar curvas."
-        },
-        {
-          when_all: {
-            material: ["SUS – kraft virgen dorso marrón"],
-            finishes: ["Cold foil (en frío)"]
-          },
-          severity: "ERROR",
-          message: "Cold foil requiere superficie muy lisa y pre-adhesivo UV; dorso kraft no estucado no es adecuado. Usar cara estucada o pre-coat."
-        },
-        {
-          when_all: {
-            material: ["Cast Coated – alto brillo espejo"],
-            finishes: ["Emboss (relieve)"]
-          },
-          severity: "WARNING",
-          message: "Cast coated es rígido y quebradizo en relieve profundo; riesgo de craquelado. Reducir profundidad, utillaje templado y prueba."
-        },
-        {
-          when_all: {
-            inks: ["Offset Convencional (estándar)"],
-            context: ["Alimentación"]
-          },
-          severity: "ERROR",
-          message: "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Usar series LM o barrera válida."
+      "severity": "WARNING",
+      "message": "Barniz UV sobre hot foil puede producir de-wetting y pérdida de brillo. Usar OPV compatible o reservar."
+    },
+    {
+      "when_all": {
+        "varnishes": [
+          "Anti-scratch/anti-scuff OPV"
+        ]
+      },
+      "severity": "INFO",
+      "message": "Soft touch es sensible al rayado: considera OPV anti-scuff compatible o laminar con soft-touch."
+    },
+    {
+      "when_all": {
+        "finishes": [
+          "Códigos invisibles UV/IR"
+        ],
+        "films": [
+          "Laminado BOPP brillo",
+          "Laminado BOPP mate",
+          "Laminado PET brillo"
+        ]
+      },
+      "severity": "WARNING",
+      "message": "El laminado puede inutilizar la lectura de códigos UV/IR. Deja ventana sin laminar o imprime por segunda pasada."
+    },
+    {
+      "when_all": {
+        "materials": [
+          "Cartón metalizado (foil/transfer metal)"
+        ],
+        "inks": [
+          "Offset Convencional (estándar)"
+        ]
+      },
+      "severity": "WARNING",
+      "message": "Sobre metalizado, la densidad y el trapping cambian: usar cama blanca/primer y ajustar curvas."
+    },
+    {
+      "when_all": {
+        "material": [
+          "WLC (GD/GT) – reciclado estucado dorso gris/crema"
+        ],
+        "finishes": [
+          "Hot foil (estamping caliente)"
+        ]
+      },
+      "severity": "WARNING",
+      "message": "Hot foil sobre WLC puede fallar por baja resistencia superficial/estucado heterogéneo. Recomiende foil adhesivo ‘agresivo’, presión mayor y prueba previa."
+    },
+    {
+      "when_all": {
+        "material": [
+          "SUS – kraft virgen dorso marrón"
+        ],
+        "finishes": [
+          "Cold foil (en frío)"
+        ]
+      },
+      "severity": "ERROR",
+      "message": "Cold foil requiere superficie muy lisa y pre-adhesivo UV; dorso kraft no estucado no es adecuado. Usar cara estucada o pre-coat."
+    },
+    {
+      "when_all": {
+        "material": [
+          "Cast Coated – alto brillo espejo"
+        ],
+        "finishes": [
+          "Emboss (relieve)",
+          "Relieve multinivel"
+        ]
+      },
+      "severity": "WARNING",
+      "message": "Cast coated es rígido y quebradizo en relieve profundo; riesgo de craquelado/brillo roto. Reducir profundidad, usar utillaje templado y prueba."
+    },
+    {
+      "when_all": {
+        "finishes": [
+          "Cast & Cure (holografía clara)"
+        ],
+        "varnishes": [
+          "UV brillo",
+          "UV mate/satinado"
+        ]
+      },
+      "severity": "INFO",
+      "message": "Cast & Cure requiere barniz UV curable y superficie lisa. Verificar dureza UV y película para evitar bloqueo."
+    },
+    {
+      "when_all": {
+        "varnishes": [
+          "Soft touch acuoso",
+          "Soft touch film (laminado)"
+        ],
+        "finishes": [
+          "Hot foil (estamping caliente)"
+        ]
+      },
+      "severity": "WARNING",
+      "message": "Soft touch tiene baja energía superficial: usar foil/placa específicos para soft touch o aplicar primer. Riesgo de mala transferencia."
+    },
+    {
+      "when_all": {
+        "inks": [
+          "Offset Convencional (estándar)"
+        ],
+        "context": [
+          "Alimentación"
+        ]
+      },
+      "severity": "ERROR",
+      "message": "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Use series LM o barrera funcional validada."
+    }
+  ]
+};
+        const USER_RULES = [
+  {
+    "name": "PRUEBA",
+    "severity": "ERROR",
+    "message": "ES UNA PRUEBA",
+    "remedy": "FUNCIONA",
+    "kw_materials": [
+      "a"
+    ],
+    "kw_finishes": [
+      "a"
+    ],
+    "kw_inks": [
+      "a"
+    ]
+  }
+];
+        const USER_MATERIALS = [];
+
+        function crearCheckboxes(id, items) {
+            const cont = document.getElementById(id);
+            cont.innerHTML = '';
+            (items || []).forEach(nombre => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'checkbox-item';
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.value = nombre;
+
+                const label = document.createElement('label');
+                label.textContent = nombre;
+
+                wrapper.appendChild(input);
+                wrapper.appendChild(label);
+                cont.appendChild(wrapper);
+            });
         }
-      ]
-    };
 
-    const USER_RULES = [
-      // Aquí puedes replicar tus reglas de user_rules.json si quieres
-      // Ejemplo:
-      // {
-      //   name: "PRUEBA",
-      //   severity: "ERROR",
-      //   message: "ES UNA PRUEBA",
-      //   remedy: "FUNCIONA",
-      //   kw_materials: ["a"],
-      //   kw_finishes: ["a"],
-      //   kw_inks: ["a"]
-      // }
-    ];
+        function inicializar() {
+            const catalog = CONFIG.catalog || {};
 
-    // ======================
-    //  Construcción UI
-    // ======================
-    function crearCheckboxes(id, items) {
-      const cont = document.getElementById(id);
-      cont.innerHTML = "";
-      items.forEach(nombre => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "checkbox-item";
-
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.value = nombre;
-
-        const label = document.createElement("label");
-        label.textContent = nombre;
-
-        wrapper.appendChild(input);
-        wrapper.appendChild(label);
-        cont.appendChild(wrapper);
-      });
-    }
-
-    function inicializar() {
-      const c = CONFIG.catalog;
-      crearCheckboxes("materials-eval", c.materials || []);
-      crearCheckboxes("inks-eval", c.inks || []);
-      crearCheckboxes("varnishes-eval", c.varnishes || []);
-      crearCheckboxes("films-eval", c.films || []);
-      crearCheckboxes("finishes-eval", c.finishes || []);
-      crearCheckboxes("adhesion-eval", c.adhesion_glue || []);
-      crearCheckboxes("process-flags-eval", c.process_flags || []);
-    }
-
-    window.onload = inicializar;
-
-    // ======================
-    //  Lógica de evaluación
-    // ======================
-    function obtenerSeleccionEval() {
-      const seleccion = {};
-      const keys = ["materials", "inks", "varnishes", "films", "finishes", "adhesion_glue"];
-      keys.forEach(key => {
-        seleccion[key] = [];
-        const checkboxes = document.querySelectorAll(`#${key}-eval input[type="checkbox"]:checked`);
-        checkboxes.forEach(cb => seleccion[key].push(cb.value));
-      });
-
-      seleccion.process = [];
-      seleccion.context = [];
-      const processCheckboxes = document.querySelectorAll('#process-flags-eval input[type="checkbox"]:checked');
-      processCheckboxes.forEach(cb => {
-        const v = cb.value;
-        if (v === "Hendido/plegado" || v === "Plegado/encolado") {
-          seleccion.process.push(v);
-        } else {
-          seleccion.context.push(v);
-        }
-      });
-
-      return seleccion;
-    }
-
-    function generarSecuencia(materials, inks, finishes) {
-      const seq = [];
-      seq.push("Preimpresión: perfiles, trapping, reservas (foil/UV/cola).");
-
-      if (materials.some(m => m.toLowerCase().includes("metalizado"))) {
-        seq.push("Serigrafía: cama blanca opaca para metalizado si requiere.");
-      }
-      if (inks.some(i => i.includes("Offset"))) {
-        seq.push("Impresión offset (CMYK/Pantone).");
-      }
-      if (finishes.some(f => f.includes("Cold foil"))) {
-        seq.push("Cold foil en línea/sobreimprimible (si aplica).");
-      }
-      if (finishes.some(f => f.includes("Hot foil") || f.toLowerCase().includes("estamping"))) {
-        seq.push("Hot foil (tras impresión; antes de relieve).");
-      }
-      const filmsSel = obtenerSeleccionEval().films || [];
-      if (filmsSel.length > 0) {
-        seq.push("Laminación (brillo/mate/soft-touch) según diseño.");
-      }
-      const varn = obtenerSeleccionEval().varnishes || [];
-      if (varn.length > 0) {
-        seq.push("Barnices (UV/AQ/anti-scuff) con reservas de cola.");
-      }
-      if (finishes.some(f => f.toLowerCase().includes("braille"))) {
-        seq.push("Braille después de laminación para mantener altura.");
-      }
-      seq.push("Troquelado + Hendidos.");
-      seq.push("Plegado + Pegado.");
-      seq.push("Control de calidad final.");
-
-      return seq;
-    }
-
-    function analizarSecuenciaProceso(sequence, materials, inks, finishes, context) {
-      const alerts = [];
-      const seqLower = sequence.map(s => s.toLowerCase());
-
-      if (seqLower.some(s => s.includes("hot foil")) && seqLower.some(s => s.includes("barniz"))) {
-        alerts.push({
-          severity: "WARNING",
-          message: "Barniz posterior puede apagar el brillo del foil. Usar OPV para foil o reserva."
-        });
-      }
-      if (finishes.some(f => f.toLowerCase().includes("soft touch")) &&
-          finishes.some(f => f.toLowerCase().includes("hot foil"))) {
-        alerts.push({
-          severity: "WARNING",
-          message: "Soft-touch: baja energía superficial, requiere foil/planchas específicas o primer."
-        });
-      }
-      if (materials.some(m => m.toLowerCase().includes("cast coated")) &&
-          finishes.some(f => f.toLowerCase().includes("relieve"))) {
-        alerts.push({
-          severity: "WARNING",
-          message: "Cast coated en relieve profundo: riesgo de craquelado. Reducir profundidad y usar utillaje templado."
-        });
-      }
-      return alerts;
-    }
-
-    function evaluarCompatibilidad() {
-      const seleccion = obtenerSeleccionEval();
-      const hits = [];
-
-      // Reglas estructuradas
-      for (const r of CONFIG.rules) {
-        let cumple = true;
-        for (const [key, valores] of Object.entries(r.when_all || {})) {
-          const k = key === "material" ? "materials" : key;
-          if (k === "context") {
-            if (!valores.every(v => seleccion.context.includes(v))) {
-              cumple = false;
-              break;
+            // Combina materiales aprendidos con el catálogo principal
+            if (USER_MATERIALS && Array.isArray(USER_MATERIALS)) {
+                catalog.materials = catalog.materials || [];
+                USER_MATERIALS.forEach(m => {
+                    if (m.nombre && !catalog.materials.includes(m.nombre)) {
+                        catalog.materials.push(m.nombre);
+                    }
+                });
             }
-          } else {
-            if (!seleccion[k] || !valores.every(v => seleccion[k].includes(v))) {
-              cumple = false;
-              break;
+
+            crearCheckboxes('materials-eval', catalog.materials || []);
+            crearCheckboxes('inks-eval', catalog.inks || []);
+            crearCheckboxes('varnishes-eval', catalog.varnishes || []);
+            crearCheckboxes('films-eval', catalog.films || []);
+            crearCheckboxes('finishes-eval', catalog.finishes || []);
+            crearCheckboxes('adhesion-eval', catalog.adhesion_glue || []);
+            crearCheckboxes('process-flags-eval', catalog.process_flags || []);
+        }
+
+        window.onload = inicializar;
+
+        function obtenerSeleccionEval() {
+            const seleccion = {};
+            const keys = ['materials', 'inks', 'varnishes', 'films', 'finishes', 'adhesion_glue'];
+            keys.forEach(key => {
+                seleccion[key] = [];
+                const checkboxes = document.querySelectorAll(`#${key}-eval input[type="checkbox"]:checked`);
+                checkboxes.forEach(cb => seleccion[key].push(cb.value));
+            });
+
+            seleccion.process = [];
+            seleccion.context = [];
+            const processCheckboxes = document.querySelectorAll('#process-flags-eval input[type="checkbox"]:checked');
+            processCheckboxes.forEach(cb => {
+                const v = cb.value;
+                if (v === 'Hendido/Plegado' || v === 'Plegado/encolado' || v === 'Hendido/plegado') {
+                    seleccion.process.push(v);
+                } else {
+                    seleccion.context.push(v);
+                }
+            });
+
+            return seleccion;
+        }
+
+        function evaluarCompatibilidad() {
+            const seleccion = obtenerSeleccionEval();
+            const hits = [];
+
+            (CONFIG.rules || []).forEach(regla => {
+                let cumple = true;
+                const condiciones = regla.when_all || {};
+                for (const [key, valores] of Object.entries(condiciones)) {
+                    const k = key === 'material' ? 'materials' : key;
+                    if (k === 'context') {
+                        if (!valores.every(v => seleccion.context.includes(v))) {
+                            cumple = false;
+                            break;
+                        }
+                    } else {
+                        if (!seleccion[k] || !valores.every(v => seleccion[k].includes(v))) {
+                            cumple = false;
+                            break;
+                        }
+                    }
+                }
+                if (cumple) {
+                    hits.push({ severity: regla.severity, message: regla.message });
+                }
+            });
+
+            const subs = seleccion.materials || [];
+            const inks = seleccion.inks || [];
+            const fins = seleccion.finishes || [];
+
+            (USER_RULES || []).forEach(kr => {
+                let triggers = true;
+                if (kr.kw_materials && kr.kw_materials.length > 0) {
+                    triggers = triggers && kr.kw_materials.some(kw =>
+                        subs.some(s => s.toLowerCase().includes(kw.toLowerCase()))
+                    );
+                }
+                if (kr.kw_inks && kr.kw_inks.length > 0) {
+                    triggers = triggers && kr.kw_inks.some(kw =>
+                        inks.some(i => i.toLowerCase().includes(kw.toLowerCase()))
+                    );
+                }
+                if (kr.kw_finishes && kr.kw_finishes.length > 0) {
+                    triggers = triggers && kr.kw_finishes.some(kw =>
+                        fins.some(f => f.toLowerCase().includes(kw.toLowerCase()))
+                    );
+                }
+                if (triggers) {
+                    let msg = `[${kr.severity}] ${kr.name || 'Regla'}: ${kr.message}`;
+                    if (kr.remedy) msg += `\n→ ${kr.remedy}`;
+                    hits.push({ severity: kr.severity, message: msg });
+                }
+            });
+
+            const secuencia = generarSecuencia(subs, inks, fins, seleccion);
+            const procAlerts = analizarSecuencia(secuencia, subs, inks, fins);
+
+            mostrarResultados(seleccion, hits, secuencia, procAlerts);
+        }
+
+        function generarSecuencia(materials, inks, finishes) {
+            const seq = [];
+            seq.push("Preimpresión: perfiles, trapping, reservas (foil/UV/cola).");
+
+            if (materials.some(m => m.toLowerCase().includes("metalizado"))) {
+                seq.push("Serigrafía: cama blanca opaca para metalizado si requiere.");
             }
-          }
+            if (inks.some(i => i.includes("Offset"))) {
+                seq.push("Impresión offset (CMYK/Pantone).");
+            }
+            if (finishes.some(f => f.includes("Cold foil"))) {
+                seq.push("Cold foil en línea/sobreimprimible (si aplica).");
+            }
+            if (finishes.some(f => f.includes("Hot foil") || f.toLowerCase().includes("estamping"))) {
+                seq.push("Hot foil (tras impresión; antes de relieve).");
+            }
+            const filmsSel = obtenerSeleccionEval().films || [];
+            if (filmsSel.length > 0) {
+                seq.push("Laminación (brillo/mate/soft-touch) según diseño.");
+            }
+            const varnishes = obtenerSeleccionEval().varnishes || [];
+            if (varnishes.length > 0) {
+                seq.push("Barnices (UV/AQ/anti-scuff) con reservas de cola.");
+            }
+            if (finishes.some(f => f.toLowerCase().includes("braille"))) {
+                seq.push("Braille después de laminación para mantener altura.");
+            }
+
+            seq.push("Troquelado + Hendidos.");
+            seq.push("Plegado + Pegado.");
+            seq.push("Control de calidad final.");
+
+            return seq;
         }
-        if (cumple) {
-          hits.push({ severity: r.severity, message: r.message });
+
+        function analizarSecuencia(sequence, materials, inks, finishes) {
+            const alerts = [];
+            const seqLower = sequence.map(s => s.toLowerCase());
+
+            if (seqLower.some(s => s.includes("hot foil")) && seqLower.some(s => s.includes("barniz"))) {
+                alerts.push({
+                    severity: "WARNING",
+                    message: "Barniz posterior puede apagar el brillo del foil. Usar OPV para foil o reserva."
+                });
+            }
+            if (finishes.some(f => f.toLowerCase().includes("soft touch")) &&
+                finishes.some(f => f.toLowerCase().includes("hot foil"))) {
+                alerts.push({
+                    severity: "WARNING",
+                    message: "Soft-touch con hot foil: baja energía superficial, usar primer o foil específico."
+                });
+            }
+            if (materials.some(m => m.toLowerCase().includes("cast coated")) &&
+                finishes.some(f => f.toLowerCase().includes("relieve"))) {
+                alerts.push({
+                    severity: "WARNING",
+                    message: "Cast Coated en relieve profundo: riesgo de craquelado, reducir profundidad y usar utillaje templado."
+                });
+            }
+
+            return alerts;
         }
-      }
 
-      // Reglas por palabras clave
-      const subs = seleccion.materials || [];
-      const inks = seleccion.inks || [];
-      const fins = seleccion.finishes || [];
-      for (const kr of USER_RULES) {
-        let triggers = true;
-        if (kr.kw_materials && kr.kw_materials.length > 0) {
-          triggers = triggers && kr.kw_materials.some(kw =>
-            subs.some(s => s.toLowerCase().includes(kw.toLowerCase()))
-          );
+        function mostrarResultados(seleccion, hits, secuencia, procAlerts) {
+            const container = document.getElementById('results-eval');
+            let html = '<h3 style="color:#00ff41;margin-bottom:6px;">Resultados de evaluación</h3>';
+
+            html += '<div style="margin:6px 0;padding:8px;background:#131a2e;border-radius:4px;"><strong>Selección actual:</strong><br>';
+            for (const [k, vals] of Object.entries(seleccion)) {
+                if (vals && vals.length > 0) {
+                    html += `<strong>${k}:</strong> ${vals.join(', ')}<br>`;
+                }
+            }
+            html += '</div>';
+
+            const allHits = [...hits, ...procAlerts];
+            if (allHits.length > 0) {
+                html += '<h4 style="color:#00ff41;margin:8px 0 4px;">Alertas:</h4>';
+                const order = { ERROR: 0, WARNING: 1, INFO: 2 };
+                allHits.sort((a, b) => (order[a.severity] ?? 3) - (order[b.severity] ?? 3));
+
+                allHits.forEach(hit => {
+                    const cls = hit.severity === 'ERROR' ? 'alert-error'
+                              : hit.severity === 'WARNING' ? 'alert-warning'
+                              : 'alert-info';
+                    html += `<div class="alert ${cls}">${hit.message}</div>`;
+                });
+            } else {
+                html += '<div class="alert alert-info">✓ Sin alertas con las reglas actuales.</div>';
+            }
+
+            html += '<h4 style="color:#00ff41;margin:8px 0 4px;">Secuencia recomendada:</h4>';
+            html += '<div class="sequence">';
+            secuencia.forEach((p, i) => {
+                html += `<div class="sequence-item">${i + 1}. ${p}</div>`;
+            });
+            html += '</div>';
+
+            container.innerHTML = html;
+            container.scrollTop = 0;
         }
-        if (kr.kw_inks && kr.kw_inks.length > 0) {
-          triggers = triggers && kr.kw_inks.some(kw =>
-            inks.some(i => i.toLowerCase().includes(kw.toLowerCase()))
-          );
-        }
-        if (kr.kw_finishes && kr.kw_finishes.length > 0) {
-          triggers = triggers && kr.kw_finishes.some(kw =>
-            fins.some(f => f.toLowerCase().includes(kw.toLowerCase()))
-          );
-        }
-        if (triggers) {
-          let msg = `[${kr.severity}] ${kr.name || "Regla"}: ${kr.message}`;
-          if (kr.remedy) msg += `\n→ ${kr.remedy}`;
-          hits.push({ severity: kr.severity, message: msg });
-        }
-      }
-
-      const secuencia = generarSecuencia(subs, inks, fins);
-      const procAlerts = analizarSecuenciaProceso(secuencia, subs, inks, fins, seleccion.context);
-
-      mostrarResultados(seleccion, hits, secuencia, procAlerts);
-    }
-
-    function mostrarResultados(seleccion, hits, secuencia, procAlerts) {
-      const container = document.getElementById("results-eval");
-      let html = `<h3 style="color:#00ff41;margin-bottom:6px;">Resultados de evaluación</h3>`;
-
-      html += `<div style="margin:6px 0;padding:8px;background:#131a2e;border-radius:4px;">
-        <strong>Selección actual:</strong><br>`;
-      for (const [k, vals] of Object.entries(seleccion)) {
-        if (vals && vals.length > 0) {
-          html += `<strong>${k}:</strong> ${vals.join(", ")}<br>`;
-        }
-      }
-      html += `</div>`;
-
-      const allHits = [...hits, ...procAlerts];
-      if (allHits.length > 0) {
-        html += `<h4 style="color:#00ff41;margin:8px 0 4px;">Alertas:</h4>`;
-        const order = { ERROR: 0, WARNING: 1, INFO: 2 };
-        allHits.sort((a, b) => (order[a.severity] ?? 3) - (order[b.severity] ?? 3));
-        allHits.forEach(hit => {
-          const cls = hit.severity === "ERROR" ? "alert-error"
-                    : hit.severity === "WARNING" ? "alert-warning"
-                    : "alert-info";
-          html += `<div class="alert ${cls}">${hit.message}</div>`;
-        });
-      } else {
-        html += `<div class="alert alert-info">✓ Sin alertas con las reglas actuales.</div>`;
-      }
-
-      html += `<h4 style="color:#00ff41;margin:8px 0 4px;">Secuencia recomendada:</h4>`;
-      html += `<div class="sequence">`;
-      secuencia.forEach((p, i) => {
-        html += `<div class="sequence-item">${i + 1}. ${p}</div>`;
-      });
-      html += `</div>`;
-
-      container.innerHTML = html;
-      container.scrollTop = 0;
-    }
-  </script>
+    </script>
 </body>
 </html>
+
+
