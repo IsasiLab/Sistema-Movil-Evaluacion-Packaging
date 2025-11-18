@@ -158,7 +158,10 @@
             <div class="checkbox-group" id="process-flags-eval"></div>
         </div>
 
-        <button class="btn" onclick="evaluarCompatibilidad()">Evaluar compatibilidad</button>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn" onclick="evaluarCompatibilidad()" style="flex: 1;">Evaluar compatibilidad</button>
+            <button class="btn" onclick="resetearFormulario()" style="flex: 1; background: #1a2338; border-color: #ffcc70;">🔄 Reset</button>
+        </div>
 
         <section class="results" id="results-eval">
             <p style="text-align:center;color:#00ff41;">
@@ -178,7 +181,8 @@
       "Cast Coated – alto brillo espejo",
       "Cartón con barrera acuosa/dispersion (sin film)",
       "Cartón con PE/biopolímero (barrera extruida)",
-      "Cartón metalizado (foil/transfer metal)"
+      "Cartón metalizado (foil/transfer metal)",
+      "PRUEBA FINAL"
     ],
     "inks": [
       "Offset Convencional (estándar)",
@@ -233,7 +237,8 @@
       "Plegado/encolado",
       "Alimentación",
       "Farma",
-      "Reciclabilidad"
+      "Reciclabilidad",
+      "PRUEBA FINAL"
     ]
   },
   "rules": [
@@ -359,6 +364,18 @@
       },
       "severity": "ERROR",
       "message": "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Use series LM o barrera funcional validada."
+    },
+    {
+      "when_all": {
+        "materials": [
+          "PRUEBA FINAL"
+        ],
+        "context": [
+          "PRUEBA FINAL"
+        ]
+      },
+      "severity": "ERROR",
+      "message": "PRUEBA FINAL: ERROR PRUEBA FINAL"
     }
   ]
 };
@@ -435,6 +452,18 @@
         }
 
         window.onload = inicializar;
+
+        function evaluarCompatibilidad() {
+            const seleccion = obtenerSeleccionEval();
+            // ... código existente ...
+        }
+
+        function resetearFormulario() {
+            // Limpiar todos los checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            // Limpiar resultados
+            document.getElementById('results-eval').innerHTML = '<p style="text-align:center;color:#00ff41;">Selecciona componentes y pulsa "Evaluar compatibilidad".</p>';
+        }
 
         function obtenerSeleccionEval() {
             const seleccion = {};
