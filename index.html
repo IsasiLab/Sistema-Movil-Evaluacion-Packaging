@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Móvil Evaluación Packaging</title>
+    <title>Evaluador Packaging + IA</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -12,33 +12,22 @@
             color: #e5f2ff;
             min-height: 100vh;
         }
+        html { scroll-behavior: smooth; }
         .header {
             background: #0d1220;
-            padding: 14px;
+            padding: 16px 12px;
             border-bottom: 2px solid #00ff41;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .header h1 {
-            font-size: 1.2rem;
             text-align: center;
-            color: #00ff41;
         }
-        .status {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #58ffc7;
-            margin-top: 4px;
-        }
-        /* Usar todo el ancho de la ventana para mejor visualización en pantallas grandes */
-        .container { padding: 12px; max-width: none; width: 100%; margin: 0 auto; }
+        .header h1 { font-size: 1.2rem; color: #00ff41; }
+        .header p { font-size: 0.85rem; color: #58ffc7; margin-top: 4px; }
+        .container { padding: 14px; max-width: 1200px; margin: 0 auto; }
         .section {
             background: #0d1220;
             border: 1px solid #131a2e;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 12px;
-            margin: 10px 0;
+            margin-bottom: 12px;
         }
         .section-title {
             color: #00ff41;
@@ -52,74 +41,51 @@
             gap: 6px;
             max-height: 220px;
             overflow-y: auto;
-            overflow-x: hidden;
-            padding: 6px;
-        }
-        /* Permitir que el scroll de la página pase a través de checkboxes */
-        .checkbox-group::-webkit-scrollbar {
-            width: 6px;
-        }
-        .checkbox-group::-webkit-scrollbar-track {
-            background: #131a2e;
-        }
-        .checkbox-group::-webkit-scrollbar-thumb {
-            background: #00ff41;
-            border-radius: 3px;
-        }
-        .checkbox-group::-webkit-scrollbar-thumb:hover {
-            background: #58ffc7;
+            padding-right: 4px;
         }
         .checkbox-item {
             display: flex;
             align-items: center;
+            gap: 8px;
             padding: 6px;
             background: #131a2e;
             border-radius: 4px;
-            gap: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
         }
-        .checkbox-item:hover { background: #1a2338; }
         .checkbox-item input[type="checkbox"] {
             width: 18px;
             height: 18px;
             accent-color: #00ff41;
-            cursor: pointer;
         }
-        .checkbox-item label {
-            flex: 1;
-            font-size: 0.9rem;
-            cursor: pointer;
+        .checkbox-item label { flex: 1; font-size: 0.9rem; }
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin: 16px 0;
         }
         .btn {
-            width: 100%;
-            margin: 12px 0;
-            padding: 12px;
-            border-radius: 6px;
+            padding: 14px;
+            border-radius: 8px;
             border: 2px solid #00ff41;
             background: #131a2e;
             color: #e5f2ff;
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: 0.25s all;
+            transition: 0.2s all;
         }
-        .btn:hover, .btn:active {
-            background: #00ff41;
-            color: #05060f;
-        }
+        .btn:hover { background: #00ff41; color: #05060f; }
+        .btn-ia { border-color: #58ffc7; }
+        .btn-reset { border-color: #ffcc70; }
         .results {
             background: #0d1220;
-            border-radius: 8px;
-            padding: 12px;
-            margin: 12px 0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 14px;
             max-height: 520px;
             overflow-y: auto;
-            scroll-behavior: smooth;
         }
-        html {
-            scroll-behavior: smooth;
-        }
+        .results h3 { color: #00ff41; margin-bottom: 6px; }
         .alert {
             padding: 8px 10px;
             margin: 6px 0;
@@ -133,19 +99,21 @@
         .alert-info { background: rgba(88,255,199,0.1); border-color: #58ffc7; color: #a3ffe3; }
         .sequence {
             margin-top: 8px;
-            padding: 8px;
+            padding: 10px;
             background: #131a2e;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 0.9rem;
         }
         .sequence-item { padding: 3px 0; }
-        @media (max-width: 768px) { .container { padding: 10px; } }
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+        }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>Sistema Móvil Evaluación Packaging</h1>
-        <p class="status">Versión web solo evaluación – datos generados automáticamente</p>
+        <h1>Packaging + Lux Assistant (Web)</h1>
+        <p>Solo Evaluación – Botones: Evaluar | Evaluar con IA | Reset</p>
     </header>
 
     <main class="container">
@@ -178,41 +146,21 @@
             <div class="checkbox-group" id="process-flags-eval"></div>
         </div>
 
-        <!-- BÚSQUEDA INTELIGENTE CON IA -->
-        <div class="section">
-            <div class="section-title">🤖 Búsqueda Inteligente</div>
-            <div style="padding: 8px;">
-                <input type="text" id="busqueda-ia-input" placeholder="Ej: 'cartón resistente', 'tinta eco', 'acabado brillante'..." 
-                       style="width: 100%; padding: 10px; border: 1px solid #00ff41; background: #131a2e; color: #e5f2ff; border-radius: 4px; font-size: 0.95rem;">
-                <button class="btn" onclick="buscarConIA()" style="margin-top: 8px; margin-bottom: 0;">🔍 Buscar Componente</button>
-                <div id="busqueda-ia-resultados" style="margin-top: 10px; padding: 10px; background: #131a2e; border-radius: 4px; min-height: 40px; font-size: 0.9rem; color: #58ffc7; display: none;">
-                </div>
-            </div>
-        </div>
-
-        <div style="display: flex; gap: 10px;">
-            <button class="btn" onclick="evaluarCompatibilidad()" style="flex: 1;">Evaluar compatibilidad</button>
-            <button class="btn" onclick="resetearFormulario()" style="flex: 1; background: #1a2338; border-color: #ffcc70;">🔄 Reset</button>
+        <div class="actions">
+            <button class="btn" onclick="evaluarCompatibilidad()">🧪 Evaluar compatibilidad</button>
+            <button class="btn btn-ia" onclick="evaluarConIA()">🤖 Evaluar con IA</button>
+            <button class="btn btn-reset" onclick="resetearFormulario()">🔄 Refrescar / Reset</button>
         </div>
 
         <section class="results" id="results-eval">
-            <p style="text-align:center;color:#00ff41;">
-                Selecciona componentes y pulsa "Evaluar compatibilidad".
-            </p>
+            <h3>Resultados de evaluación</h3>
+            <p style="color:#58ffc7;">Selecciona componentes y pulsa “Evaluar compatibilidad”.</p>
         </section>
 
-        <!-- GUÍA PASO A PASO -->
-        <div class="section" style="background:#0d1220;border-left:4px solid #00ff41;">
-            <div class="section-title" style="color:#00ff41;">📋 Guía paso a paso</div>
-            <div style="font-size:0.9rem;line-height:1.6;color:#a3ffe3;">
-                <strong style="color:#00ff41;">1. Selecciona componentes:</strong> Marca los materiales, tintas, barnices, etc. que usarás en tu proyecto.
-                <br><strong style="color:#00ff41;">2. Revisa la selección:</strong> Todos los elementos seleccionados se mostrarán en el resumen de resultados.
-                <br><strong style="color:#00ff41;">3. Haz clic en "Evaluar compatibilidad":</strong> El sistema analizará las combinaciones y mostrará alertas (ERROR, WARNING, INFO).
-                <br><strong style="color:#00ff41;">4. Revisa los resultados:</strong> Verás la secuencia recomendada y cualquier incompatibilidad detectada.
-                <br><strong style="color:#00ff41;">5. Usa "Reset" para limpiar:</strong> Si quieres evaluar otra combinación, haz clic en el botón Reset.
-                <br><strong style="color:#00ff41;">💡 Consejo:</strong> Prueba la búsqueda inteligente si no encuentras un componente específico.
-            </div>
-        </div>
+        <section class="results" id="results-ia">
+            <h3>🤖 Análisis IA</h3>
+            <p style="color:#58ffc7;">Pulsa “Evaluar con IA” para generar el diagnóstico inteligente.</p>
+        </section>
     </main>
 
     <script>
@@ -226,8 +174,7 @@
       "Cast Coated – alto brillo espejo",
       "Cartón con barrera acuosa/dispersion (sin film)",
       "Cartón con PE/biopolímero (barrera extruida)",
-      "Cartón metalizado (foil/transfer metal)",
-      "PRUEBA FINAL"
+      "Cartón metalizado (foil/transfer metal)"
     ],
     "inks": [
       "Offset Convencional (estándar)",
@@ -409,18 +356,6 @@
       },
       "severity": "ERROR",
       "message": "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Use series LM o barrera funcional validada."
-    },
-    {
-      "when_all": {
-        "materials": [
-          "PRUEBA FINAL"
-        ],
-        "context": [
-          "PRUEBA FINAL"
-        ]
-      },
-      "severity": "WARNING",
-      "message": "REGLA IA: CREADA PARA PRUEBAS IA"
     }
   ]
 };
@@ -441,18 +376,7 @@
     ]
   }
 ];
-        const USER_MATERIALS = [
-  {
-    "grupo": "",
-    "nombre": "PRUEBA FINAL",
-    "alias": "",
-    "calibre_mm": "",
-    "gramaje_gm2": "",
-    "caracter": "",
-    "uso": "",
-    "observaciones": ""
-  }
-];
+        const USER_MATERIALS = [];
 
         function crearCheckboxes(id, items) {
             const cont = document.getElementById(id);
@@ -476,8 +400,6 @@
 
         function inicializar() {
             const catalog = CONFIG.catalog || {};
-
-            // Combina materiales aprendidos con el catálogo principal
             if (USER_MATERIALS && Array.isArray(USER_MATERIALS)) {
                 catalog.materials = catalog.materials || [];
                 USER_MATERIALS.forEach(m => {
@@ -498,59 +420,19 @@
 
         window.onload = inicializar;
 
-        // ===== CONTROL DE SCROLL GLOBAL =====
-        // Permitir wheel event en página cuando checkbox-group está visible
-        document.addEventListener('wheel', function(e) {
-            // No bloqueamos el evento - permitimos scroll global siempre
-            const target = e.target.closest('.checkbox-group');
-            if (target) {
-                // Si estamos en un checkbox-group, permitir scroll en grupo
-                const scrollTop = target.scrollTop;
-                const scrollHeight = target.scrollHeight;
-                const clientHeight = target.clientHeight;
-                
-                if ((scrollTop === 0 && e.deltaY < 0) || (scrollTop + clientHeight >= scrollHeight && e.deltaY > 0)) {
-                    // Si llegamos al final/inicio del grupo, permitir scroll de página
-                    return; // No prevenir default
-                }
-            }
-        }, { passive: true });
-
-        // Hacer que checkboxes no capturen scroll de página
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.checkbox-group').forEach(group => {
-                group.addEventListener('wheel', function(e) {
-                    // Permitir scroll de página incluso si estamos en checkbox
-                    e.stopPropagation();
-                }, { passive: true });
-            });
-        });
-
-        function evaluarCompatibilidad() {
-            const seleccion = obtenerSeleccionEval();
-            // ... código existente ...
-        }
-
-        function resetearFormulario() {
-            // Limpiar todos los checkboxes
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-            // Limpiar resultados
-            document.getElementById('results-eval').innerHTML = '<p style="text-align:center;color:#00ff41;">Selecciona componentes y pulsa "Evaluar compatibilidad".</p>';
-        }
-
         function obtenerSeleccionEval() {
             const seleccion = {};
             const keys = ['materials', 'inks', 'varnishes', 'films', 'finishes', 'adhesion_glue'];
             keys.forEach(key => {
                 seleccion[key] = [];
-                const checkboxes = document.querySelectorAll(`#${key}-eval input[type="checkbox"]:checked`);
-                checkboxes.forEach(cb => seleccion[key].push(cb.value));
+                document.querySelectorAll(`#${key}-eval input[type="checkbox"]:checked`).forEach(cb => {
+                    seleccion[key].push(cb.value);
+                });
             });
 
             seleccion.process = [];
             seleccion.context = [];
-            const processCheckboxes = document.querySelectorAll('#process-flags-eval input[type="checkbox"]:checked');
-            processCheckboxes.forEach(cb => {
+            document.querySelectorAll('#process-flags-eval input[type="checkbox"]:checked').forEach(cb => {
                 const v = cb.value;
                 if (v === 'Hendido/Plegado' || v === 'Plegado/encolado' || v === 'Hendido/plegado') {
                     seleccion.process.push(v);
@@ -562,10 +444,8 @@
             return seleccion;
         }
 
-        function evaluarCompatibilidad() {
-            const seleccion = obtenerSeleccionEval();
+        function ejecutarEvaluacion(seleccion) {
             const hits = [];
-
             (CONFIG.rules || []).forEach(regla => {
                 let cumple = true;
                 const condiciones = regla.when_all || {};
@@ -594,17 +474,17 @@
 
             (USER_RULES || []).forEach(kr => {
                 let triggers = true;
-                if (kr.kw_materials && kr.kw_materials.length > 0) {
+                if (kr.kw_materials?.length) {
                     triggers = triggers && kr.kw_materials.some(kw =>
                         subs.some(s => s.toLowerCase().includes(kw.toLowerCase()))
                     );
                 }
-                if (kr.kw_inks && kr.kw_inks.length > 0) {
+                if (kr.kw_inks?.length) {
                     triggers = triggers && kr.kw_inks.some(kw =>
                         inks.some(i => i.toLowerCase().includes(kw.toLowerCase()))
                     );
                 }
-                if (kr.kw_finishes && kr.kw_finishes.length > 0) {
+                if (kr.kw_finishes?.length) {
                     triggers = triggers && kr.kw_finishes.some(kw =>
                         fins.some(f => f.toLowerCase().includes(kw.toLowerCase()))
                     );
@@ -616,16 +496,35 @@
                 }
             });
 
-            const secuencia = generarSecuencia(subs, inks, fins, seleccion);
+            const secuencia = generarSecuencia(seleccion);
             const procAlerts = analizarSecuencia(secuencia, subs, inks, fins);
-
-            mostrarResultados(seleccion, hits, secuencia, procAlerts);
+            return { hits, secuencia, procAlerts };
         }
 
-        function generarSecuencia(materials, inks, finishes) {
-            const seq = [];
-            seq.push("Preimpresión: perfiles, trapping, reservas (foil/UV/cola).");
+        function evaluarCompatibilidad() {
+            const seleccion = obtenerSeleccionEval();
+            const resultado = ejecutarEvaluacion(seleccion);
+            mostrarResultadosCompatibilidad(seleccion, resultado);
+            enfocarResultados('results-eval');
+        }
 
+        function evaluarConIA() {
+            const seleccion = obtenerSeleccionEval();
+            const resultado = ejecutarEvaluacion(seleccion);
+            const analisis = generarAnalisisIA(resultado);
+            mostrarResultadosIA(analisis);
+            enfocarResultados('results-ia');
+        }
+
+        function generarSecuencia(seleccion) {
+            const seq = [];
+            const materials = seleccion.materials || [];
+            const inks = seleccion.inks || [];
+            const finishes = seleccion.finishes || [];
+            const filmsSel = seleccion.films || [];
+            const varnishes = seleccion.varnishes || [];
+
+            seq.push("Preimpresión: perfiles, trapping, reservas (foil/UV/cola).");
             if (materials.some(m => m.toLowerCase().includes("metalizado"))) {
                 seq.push("Serigrafía: cama blanca opaca para metalizado si requiere.");
             }
@@ -635,25 +534,21 @@
             if (finishes.some(f => f.includes("Cold foil"))) {
                 seq.push("Cold foil en línea/sobreimprimible (si aplica).");
             }
-            if (finishes.some(f => f.includes("Hot foil") || f.toLowerCase().includes("estamping"))) {
+            if (finishes.some(f => f.toLowerCase().includes("hot foil") || f.toLowerCase().includes("estamping"))) {
                 seq.push("Hot foil (tras impresión; antes de relieve).");
             }
-            const filmsSel = obtenerSeleccionEval().films || [];
             if (filmsSel.length > 0) {
                 seq.push("Laminación (brillo/mate/soft-touch) según diseño.");
             }
-            const varnishes = obtenerSeleccionEval().varnishes || [];
             if (varnishes.length > 0) {
                 seq.push("Barnices (UV/AQ/anti-scuff) con reservas de cola.");
             }
             if (finishes.some(f => f.toLowerCase().includes("braille"))) {
                 seq.push("Braille después de laminación para mantener altura.");
             }
-
             seq.push("Troquelado + Hendidos.");
             seq.push("Plegado + Pegado.");
             seq.push("Control de calidad final.");
-
             return seq;
         }
 
@@ -685,24 +580,23 @@
             return alerts;
         }
 
-        function mostrarResultados(seleccion, hits, secuencia, procAlerts) {
+        function mostrarResultadosCompatibilidad(seleccion, resultado) {
             const container = document.getElementById('results-eval');
-            let html = '<h3 style="color:#00ff41;margin-bottom:6px;">Resultados de evaluación</h3>';
+            let html = '<h3>Resultados de evaluación</h3>';
 
             html += '<div style="margin:6px 0;padding:8px;background:#131a2e;border-radius:4px;"><strong>Selección actual:</strong><br>';
             for (const [k, vals] of Object.entries(seleccion)) {
-                if (vals && vals.length > 0) {
+                if (vals?.length) {
                     html += `<strong>${k}:</strong> ${vals.join(', ')}<br>`;
                 }
             }
             html += '</div>';
 
-            const allHits = [...hits, ...procAlerts];
-            if (allHits.length > 0) {
-                html += '<h4 style="color:#00ff41;margin:8px 0 4px;">Alertas:</h4>';
+            const allHits = [...resultado.hits, ...resultado.procAlerts];
+            if (allHits.length) {
+                html += '<h4 style="color:#00ff41;margin:8px 0 4px;">Alertas detectadas:</h4>';
                 const order = { ERROR: 0, WARNING: 1, INFO: 2 };
                 allHits.sort((a, b) => (order[a.severity] ?? 3) - (order[b.severity] ?? 3));
-
                 allHits.forEach(hit => {
                     const cls = hit.severity === 'ERROR' ? 'alert-error'
                               : hit.severity === 'WARNING' ? 'alert-warning'
@@ -715,102 +609,71 @@
 
             html += '<h4 style="color:#00ff41;margin:8px 0 4px;">Secuencia recomendada:</h4>';
             html += '<div class="sequence">';
-            secuencia.forEach((p, i) => {
-                html += `<div class="sequence-item">${i + 1}. ${p}</div>`;
+            resultado.secuencia.forEach((paso, idx) => {
+                html += `<div class="sequence-item">${idx + 1}. ${paso}</div>`;
             });
             html += '</div>';
 
             container.innerHTML = html;
-            
-            // Auto-scroll al inicio de la ventana para ver resultados
-            setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                container.scrollTop = 0;
-            }, 100);
         }
 
-        // ===== BÚSQUEDA INTELIGENTE CON IA =====
-        function buscarConIA() {
-            const consulta = document.getElementById('busqueda-ia-input').value.trim();
-            if (!consulta) {
-                alert('Escribe algo para buscar');
-                return;
-            }
+        function generarAnalisisIA(resultado) {
+            const totalHits = [...resultado.hits, ...resultado.procAlerts];
+            const errores = totalHits.filter(h => h.severity === 'ERROR').length;
+            const warnings = totalHits.filter(h => h.severity === 'WARNING').length;
+            const esCompatible = errores === 0;
+            let nivel = 'BAJO';
+            if (errores > 0) nivel = 'CRÍTICO';
+            else if (warnings > 0) nivel = 'ALTO';
 
-            // Simulación de búsqueda fuzzy en el navegador
-            const resultados = buscarSimilar(consulta, CONFIG.catalog);
-            const divResultados = document.getElementById('busqueda-ia-resultados');
+            const confianza = Math.max(0, Math.min(1, 1 - errores * 0.3 - warnings * 0.1));
+            const sugerencias = [];
+            if (warnings > 0) sugerencias.push("⚠️ Revisa las advertencias antes de liberar producción.");
+            if (!esCompatible) sugerencias.push("❌ Ajusta componentes antes de continuar.");
+            if (totalHits.length === 0) sugerencias.push("✅ Sin conflictos detectados, procede con confianza.");
 
-            if (resultados.length === 0) {
-                divResultados.innerHTML = '<p style="color:#ff6b6b;">❌ No se encontraron resultados similares. Intenta con otro término.</p>';
-            } else {
-                let html = '<p style="color:#00ff41; margin-bottom: 8px;">✅ Encontrados ' + resultados.length + ' resultado(s):</p>';
-                resultados.slice(0, 5).forEach((res, i) => {
-                    html += '<div style="padding: 6px; margin: 4px 0; background: #1a2338; border-left: 3px solid #00ff41; border-radius: 2px;">';
-                    html += '<strong style="color:#00ff41;">' + (i+1) + '. [' + res.categoria.toUpperCase() + ']</strong><br>';
-                    html += res.nombre + '<br>';
-                    html += '<span style="color:#ffcc70; font-size: 0.85rem;">Similitud: ' + (res.similitud*100).toFixed(0) + '%</span>';
-                    html += '</div>';
-                });
-                divResultados.innerHTML = html;
-            }
-
-            divResultados.style.display = 'block';
+            return {
+                esCompatible,
+                nivel,
+                confianza,
+                totalHits: totalHits.length,
+                sugerencias
+            };
         }
 
-        function buscarSimilar(consulta, catalogo) {
-            const resultados = [];
-            const consultaLower = consulta.toLowerCase();
+        function mostrarResultadosIA(analisis) {
+            const container = document.getElementById('results-ia');
+            let html = '<h3>🤖 Análisis IA</h3>';
 
-            for (const [categoria, items] of Object.entries(catalogo)) {
-                if (!Array.isArray(items)) continue;
+            html += `<div class="alert ${analisis.esCompatible ? 'alert-info' : 'alert-error'}" style="border-left-width:5px;">`;
+            html += `<strong>Estado:</strong> ${analisis.esCompatible ? '✅ COMPATIBLE' : '❌ INCOMPATIBLE'}<br>`;
+            html += `<strong>Riesgo:</strong> ${analisis.nivel}<br>`;
+            html += `<strong>Confianza:</strong> ${(analisis.confianza * 100).toFixed(0)}%<br>`;
+            html += `<strong>Alertas analizadas:</strong> ${analisis.totalHits}`;
+            html += '</div>';
 
-                items.forEach(item => {
-                    const similitud = calcularSimilitud(consultaLower, item.toLowerCase());
-                    if (similitud >= 0.6) {  // Umbral de 60%
-                        resultados.push({
-                            categoria: categoria,
-                            nombre: item,
-                            similitud: similitud
-                        });
-                    }
+            if (analisis.sugerencias.length) {
+                html += '<h4 style="color:#00ff41;margin:8px 0 4px;">Recomendaciones inteligentes:</h4>';
+                analisis.sugerencias.forEach(sug => {
+                    html += `<div class="alert alert-warning">${sug}</div>`;
                 });
             }
 
-            // Ordenar por similitud descendente
-            resultados.sort((a, b) => b.similitud - a.similitud);
-            return resultados.slice(0, 10);  // Máximo 10 resultados
+            container.innerHTML = html;
         }
 
-        function calcularSimilitud(texto1, texto2) {
-            // Similitud de Levenshtein simplificada
-            let coincidencias = 0;
-            const palabras1 = texto1.split(/\s+/);
-            const palabras2 = texto2.split(/\s+/);
-
-            palabras1.forEach(p1 => {
-                if (palabras2.some(p2 => p2.includes(p1) || p1.includes(p2))) {
-                    coincidencias++;
-                }
-            });
-
-            if (palabras1.length === 0) return 0;
-            return coincidencias / Math.max(palabras1.length, palabras2.length);
+        function resetearFormulario() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.getElementById('results-eval').innerHTML = '<h3>Resultados de evaluación</h3><p style="color:#58ffc7;">Selecciona componentes y pulsa “Evaluar compatibilidad”.</p>';
+            document.getElementById('results-ia').innerHTML = '<h3>🤖 Análisis IA</h3><p style="color:#58ffc7;">Pulsa “Evaluar con IA” para generar el diagnóstico inteligente.</p>';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Capturar Enter en el input de búsqueda
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputBusqueda = document.getElementById('busqueda-ia-input');
-            if (inputBusqueda) {
-                inputBusqueda.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        buscarConIA();
-                    }
-                });
-            }
-        });
+        function enfocarResultados(elementId) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const el = document.getElementById(elementId);
+            if (el) el.scrollTop = 0;
+        }
     </script>
 </body>
 </html>
-
-
