@@ -174,7 +174,8 @@
       "Cast Coated – alto brillo espejo",
       "Cartón con barrera acuosa/dispersion (sin film)",
       "Cartón con PE/biopolímero (barrera extruida)",
-      "Cartón metalizado (foil/transfer metal)"
+      "Cartón metalizado (foil/transfer metal)",
+      "MARIGUANA"
     ],
     "inks": [
       "Offset Convencional (estándar)",
@@ -182,7 +183,8 @@
       "UV Offset",
       "UV-LED Offset / Low Energy UV",
       "Serigrafía UV",
-      "Flexo UV (barniz/integrado)"
+      "Flexo UV (barniz/integrado)",
+      "CHOCOLATE"
     ],
     "varnishes": [
       "Acuoso (AQ) brillo",
@@ -356,6 +358,18 @@
       },
       "severity": "ERROR",
       "message": "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Use series LM o barrera funcional validada."
+    },
+    {
+      "when_all": {
+        "materials": [
+          "MARIGUANA"
+        ],
+        "inks": [
+          "CHOCOLATE"
+        ]
+      },
+      "severity": "ERROR",
+      "message": "AMARILLO: NO MEZCLAR SUSTANCIAS PSICOTRÓPICAS"
     }
   ]
 };
@@ -376,7 +390,18 @@
     ]
   }
 ];
-        const USER_MATERIALS = [];
+        const USER_MATERIALS = [
+  {
+    "grupo": "",
+    "nombre": "MARIGUANA",
+    "alias": "",
+    "calibre_mm": "",
+    "gramaje_gm2": "",
+    "caracter": "",
+    "uso": "",
+    "observaciones": ""
+  }
+];
 
         function crearCheckboxes(id, items) {
             const cont = document.getElementById(id);
