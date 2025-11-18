@@ -530,7 +530,7 @@
             const seleccion = obtenerSeleccionEval();
             const resultado = ejecutarEvaluacion(seleccion);
             mostrarResultadosCompatibilidad(seleccion, resultado);
-            
+            enfocarResultados('results-eval');
         }
 
         function evaluarConIA() {
@@ -538,7 +538,7 @@
             const resultado = ejecutarEvaluacion(seleccion);
             const analisis = generarAnalisisIA(resultado);
             mostrarResultadosIA(analisis);
-            
+            enfocarResultados('results-ia');
         }
 
         function generarSecuencia(seleccion) {
@@ -694,7 +694,12 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-                }
+        function enfocarResultados(elementId) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const el = document.getElementById(elementId);
+            if (el) el.scrollTop = 0;
+        }
     </script>
 </body>
 </html>
+
