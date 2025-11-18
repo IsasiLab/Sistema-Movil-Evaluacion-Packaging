@@ -31,7 +31,8 @@
             color: #58ffc7;
             margin-top: 4px;
         }
-        .container { padding: 12px; max-width: 900px; margin: 0 auto; }
+        /* Usar todo el ancho de la ventana para mejor visualización en pantallas grandes */
+        .container { padding: 12px; max-width: none; width: 100%; margin: 0 auto; }
         .section {
             background: #0d1220;
             border: 1px solid #131a2e;
@@ -51,7 +52,22 @@
             gap: 6px;
             max-height: 220px;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 6px;
+        }
+        /* Permitir que el scroll de la página pase a través de checkboxes */
+        .checkbox-group::-webkit-scrollbar {
+            width: 6px;
+        }
+        .checkbox-group::-webkit-scrollbar-track {
+            background: #131a2e;
+        }
+        .checkbox-group::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 3px;
+        }
+        .checkbox-group::-webkit-scrollbar-thumb:hover {
+            background: #58ffc7;
         }
         .checkbox-item {
             display: flex;
@@ -99,6 +115,10 @@
             margin: 12px 0;
             max-height: 520px;
             overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        html {
+            scroll-behavior: smooth;
         }
         .alert {
             padding: 8px 10px;
@@ -158,6 +178,18 @@
             <div class="checkbox-group" id="process-flags-eval"></div>
         </div>
 
+        <!-- BÚSQUEDA INTELIGENTE CON IA -->
+        <div class="section">
+            <div class="section-title">🤖 Búsqueda Inteligente</div>
+            <div style="padding: 8px;">
+                <input type="text" id="busqueda-ia-input" placeholder="Ej: 'cartón resistente', 'tinta eco', 'acabado brillante'..." 
+                       style="width: 100%; padding: 10px; border: 1px solid #00ff41; background: #131a2e; color: #e5f2ff; border-radius: 4px; font-size: 0.95rem;">
+                <button class="btn" onclick="buscarConIA()" style="margin-top: 8px; margin-bottom: 0;">🔍 Buscar Componente</button>
+                <div id="busqueda-ia-resultados" style="margin-top: 10px; padding: 10px; background: #131a2e; border-radius: 4px; min-height: 40px; font-size: 0.9rem; color: #58ffc7; display: none;">
+                </div>
+            </div>
+        </div>
+
         <div style="display: flex; gap: 10px;">
             <button class="btn" onclick="evaluarCompatibilidad()" style="flex: 1;">Evaluar compatibilidad</button>
             <button class="btn" onclick="resetearFormulario()" style="flex: 1; background: #1a2338; border-color: #ffcc70;">🔄 Reset</button>
@@ -165,9 +197,22 @@
 
         <section class="results" id="results-eval">
             <p style="text-align:center;color:#00ff41;">
-                Selecciona componentes y pulsa “Evaluar compatibilidad”.
+                Selecciona componentes y pulsa "Evaluar compatibilidad".
             </p>
         </section>
+
+        <!-- GUÍA PASO A PASO -->
+        <div class="section" style="background:#0d1220;border-left:4px solid #00ff41;">
+            <div class="section-title" style="color:#00ff41;">📋 Guía paso a paso</div>
+            <div style="font-size:0.9rem;line-height:1.6;color:#a3ffe3;">
+                <strong style="color:#00ff41;">1. Selecciona componentes:</strong> Marca los materiales, tintas, barnices, etc. que usarás en tu proyecto.
+                <br><strong style="color:#00ff41;">2. Revisa la selección:</strong> Todos los elementos seleccionados se mostrarán en el resumen de resultados.
+                <br><strong style="color:#00ff41;">3. Haz clic en "Evaluar compatibilidad":</strong> El sistema analizará las combinaciones y mostrará alertas (ERROR, WARNING, INFO).
+                <br><strong style="color:#00ff41;">4. Revisa los resultados:</strong> Verás la secuencia recomendada y cualquier incompatibilidad detectada.
+                <br><strong style="color:#00ff41;">5. Usa "Reset" para limpiar:</strong> Si quieres evaluar otra combinación, haz clic en el botón Reset.
+                <br><strong style="color:#00ff41;">💡 Consejo:</strong> Prueba la búsqueda inteligente si no encuentras un componente específico.
+            </div>
+        </div>
     </main>
 
     <script>
@@ -374,8 +419,8 @@
           "PRUEBA FINAL"
         ]
       },
-      "severity": "ERROR",
-      "message": "PRUEBA FINAL: ERROR PRUEBA FINAL"
+      "severity": "WARNING",
+      "message": "REGLA IA: CREADA PARA PRUEBAS IA"
     }
   ]
 };
@@ -452,6 +497,34 @@
         }
 
         window.onload = inicializar;
+
+        // ===== CONTROL DE SCROLL GLOBAL =====
+        // Permitir wheel event en página cuando checkbox-group está visible
+        document.addEventListener('wheel', function(e) {
+            // No bloqueamos el evento - permitimos scroll global siempre
+            const target = e.target.closest('.checkbox-group');
+            if (target) {
+                // Si estamos en un checkbox-group, permitir scroll en grupo
+                const scrollTop = target.scrollTop;
+                const scrollHeight = target.scrollHeight;
+                const clientHeight = target.clientHeight;
+                
+                if ((scrollTop === 0 && e.deltaY < 0) || (scrollTop + clientHeight >= scrollHeight && e.deltaY > 0)) {
+                    // Si llegamos al final/inicio del grupo, permitir scroll de página
+                    return; // No prevenir default
+                }
+            }
+        }, { passive: true });
+
+        // Hacer que checkboxes no capturen scroll de página
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.checkbox-group').forEach(group => {
+                group.addEventListener('wheel', function(e) {
+                    // Permitir scroll de página incluso si estamos en checkbox
+                    e.stopPropagation();
+                }, { passive: true });
+            });
+        });
 
         function evaluarCompatibilidad() {
             const seleccion = obtenerSeleccionEval();
@@ -648,8 +721,94 @@
             html += '</div>';
 
             container.innerHTML = html;
-            container.scrollTop = 0;
+            
+            // Auto-scroll al inicio de la ventana para ver resultados
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                container.scrollTop = 0;
+            }, 100);
         }
+
+        // ===== BÚSQUEDA INTELIGENTE CON IA =====
+        function buscarConIA() {
+            const consulta = document.getElementById('busqueda-ia-input').value.trim();
+            if (!consulta) {
+                alert('Escribe algo para buscar');
+                return;
+            }
+
+            // Simulación de búsqueda fuzzy en el navegador
+            const resultados = buscarSimilar(consulta, CONFIG.catalog);
+            const divResultados = document.getElementById('busqueda-ia-resultados');
+
+            if (resultados.length === 0) {
+                divResultados.innerHTML = '<p style="color:#ff6b6b;">❌ No se encontraron resultados similares. Intenta con otro término.</p>';
+            } else {
+                let html = '<p style="color:#00ff41; margin-bottom: 8px;">✅ Encontrados ' + resultados.length + ' resultado(s):</p>';
+                resultados.slice(0, 5).forEach((res, i) => {
+                    html += '<div style="padding: 6px; margin: 4px 0; background: #1a2338; border-left: 3px solid #00ff41; border-radius: 2px;">';
+                    html += '<strong style="color:#00ff41;">' + (i+1) + '. [' + res.categoria.toUpperCase() + ']</strong><br>';
+                    html += res.nombre + '<br>';
+                    html += '<span style="color:#ffcc70; font-size: 0.85rem;">Similitud: ' + (res.similitud*100).toFixed(0) + '%</span>';
+                    html += '</div>';
+                });
+                divResultados.innerHTML = html;
+            }
+
+            divResultados.style.display = 'block';
+        }
+
+        function buscarSimilar(consulta, catalogo) {
+            const resultados = [];
+            const consultaLower = consulta.toLowerCase();
+
+            for (const [categoria, items] of Object.entries(catalogo)) {
+                if (!Array.isArray(items)) continue;
+
+                items.forEach(item => {
+                    const similitud = calcularSimilitud(consultaLower, item.toLowerCase());
+                    if (similitud >= 0.6) {  // Umbral de 60%
+                        resultados.push({
+                            categoria: categoria,
+                            nombre: item,
+                            similitud: similitud
+                        });
+                    }
+                });
+            }
+
+            // Ordenar por similitud descendente
+            resultados.sort((a, b) => b.similitud - a.similitud);
+            return resultados.slice(0, 10);  // Máximo 10 resultados
+        }
+
+        function calcularSimilitud(texto1, texto2) {
+            // Similitud de Levenshtein simplificada
+            let coincidencias = 0;
+            const palabras1 = texto1.split(/\s+/);
+            const palabras2 = texto2.split(/\s+/);
+
+            palabras1.forEach(p1 => {
+                if (palabras2.some(p2 => p2.includes(p1) || p1.includes(p2))) {
+                    coincidencias++;
+                }
+            });
+
+            if (palabras1.length === 0) return 0;
+            return coincidencias / Math.max(palabras1.length, palabras2.length);
+        }
+
+        // Capturar Enter en el input de búsqueda
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputBusqueda = document.getElementById('busqueda-ia-input');
+            if (inputBusqueda) {
+                inputBusqueda.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        buscarConIA();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
