@@ -174,8 +174,7 @@
       "Cast Coated – alto brillo espejo",
       "Cartón con barrera acuosa/dispersion (sin film)",
       "Cartón con PE/biopolímero (barrera extruida)",
-      "Cartón metalizado (foil/transfer metal)",
-      "MARIGUANA"
+      "Cartón metalizado (foil/transfer metal)"
     ],
     "inks": [
       "Offset Convencional (estándar)",
@@ -183,8 +182,7 @@
       "UV Offset",
       "UV-LED Offset / Low Energy UV",
       "Serigrafía UV",
-      "Flexo UV (barniz/integrado)",
-      "CHOCOLATE"
+      "Flexo UV (barniz/integrado)"
     ],
     "varnishes": [
       "Acuoso (AQ) brillo",
@@ -231,8 +229,7 @@
       "Plegado/encolado",
       "Alimentación",
       "Farma",
-      "Reciclabilidad",
-      "PRUEBA FINAL"
+      "Reciclabilidad"
     ]
   },
   "rules": [
@@ -358,18 +355,6 @@
       },
       "severity": "ERROR",
       "message": "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Use series LM o barrera funcional validada."
-    },
-    {
-      "when_all": {
-        "materials": [
-          "MARIGUANA"
-        ],
-        "inks": [
-          "CHOCOLATE"
-        ]
-      },
-      "severity": "ERROR",
-      "message": "AMARILLO: NO MEZCLAR SUSTANCIAS PSICOTRÓPICAS"
     }
   ]
 };
@@ -390,18 +375,7 @@
     ]
   }
 ];
-        const USER_MATERIALS = [
-  {
-    "grupo": "",
-    "nombre": "MARIGUANA",
-    "alias": "",
-    "calibre_mm": "",
-    "gramaje_gm2": "",
-    "caracter": "",
-    "uso": "",
-    "observaciones": ""
-  }
-];
+        const USER_MATERIALS = [];
 
         function crearCheckboxes(id, items) {
             const cont = document.getElementById(id);
@@ -691,13 +665,9 @@
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             document.getElementById('results-eval').innerHTML = '<h3>Resultados de evaluación</h3><p style="color:#58ffc7;">Selecciona componentes y pulsa “Evaluar compatibilidad”.</p>';
             document.getElementById('results-ia').innerHTML = '<h3>🤖 Análisis IA</h3><p style="color:#58ffc7;">Pulsa “Evaluar con IA” para generar el diagnóstico inteligente.</p>';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function enfocarResultados(elementId) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            const el = document.getElementById(elementId);
-            if (el) el.scrollTop = 0;
         }
     </script>
 </body>
