@@ -665,11 +665,13 @@
             document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
             document.getElementById('results-eval').innerHTML = '<h3>Resultados de evaluación</h3><p style="color:#58ffc7;">Selecciona componentes y pulsa “Evaluar compatibilidad”.</p>';
             document.getElementById('results-ia').innerHTML = '<h3>🤖 Análisis IA</h3><p style="color:#58ffc7;">Pulsa “Evaluar con IA” para generar el diagnóstico inteligente.</p>';
+
         }
 
         function enfocarResultados(elementId) {
+            const el = document.getElementById(elementId);
+            if (el) el.scrollTop = 0;
         }
     </script>
 </body>
 </html>
-
