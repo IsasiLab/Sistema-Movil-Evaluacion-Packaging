@@ -174,10 +174,7 @@
       "Cast Coated – alto brillo espejo",
       "Cartón con barrera acuosa/dispersion (sin film)",
       "Cartón con PE/biopolímero (barrera extruida)",
-      "Cartón metalizado (foil/transfer metal)",
-      "TEST 1",
-      "TEST 2",
-      "TEST FINAL"
+      "Cartón metalizado (foil/transfer metal)TEST"
     ],
     "inks": [
       "Offset Convencional (estándar)",
@@ -185,8 +182,7 @@
       "UV Offset",
       "UV-LED Offset / Low Energy UV",
       "Serigrafía UV",
-      "Flexo UV (barniz/integrado)",
-      "TEST 1"
+      "Flexo UV (barniz/integrado)"
     ],
     "varnishes": [
       "Acuoso (AQ) brillo",
@@ -200,16 +196,14 @@
       "Barniz serigráfico alto relieve",
       "Texturizado (arena, rugoso)",
       "Aromático (scratch & sniff)",
-      "Baja migración (LM) UV/OPV",
-      "TEST 2"
+      "Baja migración (LM) UV/OPV"
     ],
     "films": [
       "Laminado BOPP brillo",
       "Laminado BOPP mate",
       "Laminado PET brillo",
       "Laminado Soft-touch (velvet)",
-      "Laminado Holográfico",
-      "TEST 4"
+      "Laminado Holográfico"
     ],
     "finishes": [
       "Hot foil (estamping caliente)",
@@ -361,54 +355,11 @@
       },
       "severity": "ERROR",
       "message": "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Use series LM o barrera funcional validada."
-    },
-    {
-      "when_all": {
-        "materials": [
-          "TEST 2"
-        ],
-        "varnishes": [
-          "TEST 2"
-        ]
-      },
-      "severity": "ERROR",
-      "message": "TEST 2: ERROR TEST 2"
     }
   ]
 };
         const USER_RULES = [];
-        const USER_MATERIALS = [
-  {
-    "grupo": "",
-    "nombre": "TEST 1",
-    "alias": "",
-    "calibre_mm": "",
-    "gramaje_gm2": "",
-    "caracter": "",
-    "uso": "",
-    "observaciones": ""
-  },
-  {
-    "grupo": "",
-    "nombre": "TEST 2",
-    "alias": "",
-    "calibre_mm": "",
-    "gramaje_gm2": "",
-    "caracter": "",
-    "uso": "",
-    "observaciones": ""
-  },
-  {
-    "grupo": "",
-    "nombre": "TEST FINAL",
-    "alias": "",
-    "calibre_mm": "",
-    "gramaje_gm2": "",
-    "caracter": "",
-    "uso": "",
-    "observaciones": ""
-  }
-];
+        const USER_MATERIALS = [];
 
         function crearCheckboxes(id, items) {
             const cont = document.getElementById(id);
