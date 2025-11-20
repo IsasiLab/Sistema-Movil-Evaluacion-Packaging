@@ -174,7 +174,10 @@
       "Cast Coated – alto brillo espejo",
       "Cartón con barrera acuosa/dispersion (sin film)",
       "Cartón con PE/biopolímero (barrera extruida)",
-      "Cartón metalizado (foil/transfer metal)"
+      "Cartón metalizado (foil/transfer metal)",
+      "TEST 1",
+      "TEST 2",
+      "TEST 3 WEB"
     ],
     "inks": [
       "Offset Convencional (estándar)",
@@ -182,7 +185,8 @@
       "UV Offset",
       "UV-LED Offset / Low Energy UV",
       "Serigrafía UV",
-      "Flexo UV (barniz/integrado)"
+      "Flexo UV (barniz/integrado)",
+      "TEST 1"
     ],
     "varnishes": [
       "Acuoso (AQ) brillo",
@@ -196,7 +200,8 @@
       "Barniz serigráfico alto relieve",
       "Texturizado (arena, rugoso)",
       "Aromático (scratch & sniff)",
-      "Baja migración (LM) UV/OPV"
+      "Baja migración (LM) UV/OPV",
+      "TEST 2"
     ],
     "films": [
       "Laminado BOPP brillo",
@@ -291,7 +296,7 @@
         ]
       },
       "severity": "WARNING",
-      "message": "Hot foil sobre WLC puede fallar por baja resistencia superficial/estucado heterogéneo. Recomiende foil adhesivo ‘agresivo’, presión mayor y prueba previa."
+      "message": "Hot foil sobre WLC puede fallar por baja resistencia superficial/estucado heterogéneo. Recomiende foil adhesivo 'agresivo', presión mayor y prueba previa."
     },
     {
       "when_all": {
@@ -355,27 +360,66 @@
       },
       "severity": "ERROR",
       "message": "Evitar tintas convencionales estándar en estuches alimentarios sensibles. Use series LM o barrera funcional validada."
+    },
+    {
+      "when_all": {
+        "materials": [
+          "TEST 1"
+        ],
+        "inks": [
+          "TEST 1"
+        ]
+      },
+      "severity": "ERROR",
+      "message": "TEST1: PRUEBA DE ERROR"
+    },
+    {
+      "when_all": {
+        "materials": [
+          "TEST 2"
+        ],
+        "varnishes": [
+          "TEST 2"
+        ]
+      },
+      "severity": "WARNING",
+      "message": "TEST 2: ADVERTENCIA TEST 2"
     }
   ]
 };
-        const USER_RULES = [
+        const USER_RULES = [];
+        const USER_MATERIALS = [
   {
-    "name": "PRUEBA",
-    "severity": "ERROR",
-    "message": "ES UNA PRUEBA",
-    "remedy": "FUNCIONA",
-    "kw_materials": [
-      "a"
-    ],
-    "kw_finishes": [
-      "a"
-    ],
-    "kw_inks": [
-      "a"
-    ]
+    "grupo": "",
+    "nombre": "TEST 1",
+    "alias": "",
+    "calibre_mm": "",
+    "gramaje_gm2": "",
+    "caracter": "",
+    "uso": "",
+    "observaciones": ""
+  },
+  {
+    "grupo": "",
+    "nombre": "TEST 2",
+    "alias": "",
+    "calibre_mm": "",
+    "gramaje_gm2": "",
+    "caracter": "",
+    "uso": "",
+    "observaciones": ""
+  },
+  {
+    "grupo": "",
+    "nombre": "TEST 3 WEB",
+    "alias": "",
+    "calibre_mm": "",
+    "gramaje_gm2": "",
+    "caracter": "",
+    "uso": "",
+    "observaciones": ""
   }
 ];
-        const USER_MATERIALS = [];
 
         function crearCheckboxes(id, items) {
             const cont = document.getElementById(id);
